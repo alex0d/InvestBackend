@@ -8,6 +8,7 @@ import ru.alex0d.investbackend.config.JwtService
 import ru.alex0d.investbackend.dto.AuthenticationRequest
 import ru.alex0d.investbackend.dto.AuthenticationResponse
 import ru.alex0d.investbackend.dto.RegisterRequest
+import ru.alex0d.investbackend.model.Portfolio
 import ru.alex0d.investbackend.model.Role
 import ru.alex0d.investbackend.model.User
 import ru.alex0d.investbackend.repository.UserRepository
@@ -20,13 +21,16 @@ class AuthenticationService(
     private val authenticationManager: AuthenticationManager
 ) {
     fun register(request: RegisterRequest): AuthenticationResponse {
+        val portfolio = Portfolio()
         val user = User(
             firstname = request.firstname,
             lastname = request.lastname,
             email = request.email,
             password = passwordEncoder.encode(request.password),
-            role = Role.USER
+            role = Role.USER,
+            portfolio = portfolio
         )
+        portfolio.user = user
         userRepository.save(user)
         val jwtToken = jwtService.generateToken(user)
         return AuthenticationResponse(jwtToken)

@@ -1,5 +1,6 @@
 package ru.alex0d.investbackend.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -7,17 +8,22 @@ import org.springframework.security.core.userdetails.UserDetails
 @Entity
 @Table(name = "users")
 class User(
-    @Id
-    @GeneratedValue
-    val id: Int = 0,
+    @Id @GeneratedValue
+    var id: Int = 0,
 
-    val firstname: String,
-    val lastname: String? = null,
-    val email: String,
+    var firstname: String,
+    var lastname: String? = null,
+    var email: String,
+
+    @JsonIgnore
     private val password: String,
 
     @Enumerated(EnumType.STRING)
-    val role: Role,
+    var role: Role,
+
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
+    @JsonIgnore
+    var portfolio: Portfolio,
 ) : UserDetails {
 
     override fun getAuthorities() = listOf(GrantedAuthority { "ROLE_${role.name}" })
