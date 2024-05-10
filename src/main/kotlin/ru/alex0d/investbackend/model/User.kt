@@ -8,9 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails
 @Entity
 @Table(name = "users")
 class User(
-    @Id @GeneratedValue
-    var id: Int = 0,
-
     var firstname: String,
     var lastname: String? = null,
     var email: String,
@@ -24,6 +21,9 @@ class User(
     @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL])
     @JsonIgnore
     var portfolio: Portfolio,
+
+    @Id @GeneratedValue
+    var id: Int = 0
 ) : UserDetails {
 
     override fun getAuthorities() = listOf(GrantedAuthority { "ROLE_${role.name}" })

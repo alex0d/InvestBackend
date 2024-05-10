@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/invest
+    url: jdbc:postgresql://postgresql:5432/invest
     username: ${POSTGRESQL_USERNAME}
     password: ${POSTGRESQL_PASSWORD}
     driver-class-name: org.postgresql.Driver
@@ -15,6 +15,8 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 
 application:
+  tinkoff:
+    key: ${TINKOFF_KEY}
   security:
     jwt:
       secret-key: a89c1f6f36f57fda65f1155a296c1a068b3d70903bfbbe87a324556436403a91

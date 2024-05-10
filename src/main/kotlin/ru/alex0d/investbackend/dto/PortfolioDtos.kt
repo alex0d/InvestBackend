@@ -1,18 +1,27 @@
 package ru.alex0d.investbackend.dto
 
+import java.math.BigDecimal
+
 data class PortfolioInfoDto(
-    var totalValue: Double,
-    var totalProfit: Double,
-    var totalProfitPercent: Double,
+    var totalValue: BigDecimal,
+    var totalProfit: BigDecimal,
+    var totalProfitPercent: BigDecimal,
     var stocks: List<PortfolioStockInfoDto>
 )
 
 data class PortfolioStockInfoDto(
+    var uid: String,
     var ticker: String,
     var name: String,
+
     var amount: Int,
-    var price: Double,
-    var totalValue: Double,
-    var profit: Double,
-    var profitPercent: Double
+    var price: BigDecimal,
+
+    var totalValue: BigDecimal,
+    var profit: BigDecimal,
+    var profitPercent: BigDecimal,
+
+    var logoUrl: String,
+    var backgroundColor: String,
+    var textColor: String
 )

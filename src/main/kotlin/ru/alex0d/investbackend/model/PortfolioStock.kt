@@ -2,20 +2,26 @@ package ru.alex0d.investbackend.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
+import java.math.BigDecimal
 
 @Entity
 @Table(name = "portfolio_stocks")
 class PortfolioStock(
-    @Id @GeneratedValue
-    var id: Int = 0,
-
     @ManyToOne
     @JsonIgnore
     var portfolio: Portfolio?,
 
+    var uid: String,
     var ticker: String,
+    var name: String,
 
     var amount: Int,
+    var buyingPrice: BigDecimal,
 
-    var buyingPrice: Double
+    var logoUrl: String,
+    var backgroundColor: String,
+    var textColor: String,
+
+    @Id @GeneratedValue
+    var id: Int = 0
 )

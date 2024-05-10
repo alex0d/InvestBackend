@@ -1,5 +1,9 @@
 package ru.alex0d.investbackend.controller
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.security.core.annotation.AuthenticationPrincipal
@@ -9,32 +13,48 @@ import ru.alex0d.investbackend.model.User
 import ru.alex0d.investbackend.service.AdminService
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/admin")
 @PreAuthorize("hasRole('ADMIN')")
 class AdminController(
     private val adminService: AdminService
 ) {
 
+    @Operation(summary = "Get all users")
+    @ApiResponse(responseCode = "200", description = "Users retrieved successfully")
     @GetMapping("/users")
     fun getUsers(): List<User> = adminService.getUsers()
 
+    @Operation(summary = "Update user")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "User updated successfully"),
+            ApiResponse(responseCode = "400", description = "Bad request")
+        ]
+    )
     @PutMapping("/users/{id}")
     fun updateUser(
         @AuthenticationPrincipal user: User,
-        @PathVariable id: Int,
+        @Parameter(description = "User id") @PathVariable id: Int,
         @RequestBody updateUserDto: UpdateUserDto
-    ): ResponseEntity<String> {
+    ): ResponseEntity<User> {
         if (user.id == id && updateUserDto.role != null) {
-            return ResponseEntity.badRequest().body("You can't change your own role")
+            return ResponseEntity.badRequest().build()
         }
-        adminService.updateUser(id, updateUserDto)
-        return ResponseEntity.ok("User updated")
+        return ResponseEntity.ok(adminService.updateUser(id, updateUserDto))
     }
 
+    @Operation(summary = "Delete user")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "User deleted successfully"),
+            ApiResponse(responseCode = "400", description = "Bad request. You can't delete yourself")
+        ]
+    )
     @DeleteMapping("/users/{id}")
     fun deleteUser(
         @AuthenticationPrincipal user: User,
-        @PathVariable id: Int
+        @Parameter(description = "User id") @PathVariable id: Int
     ): ResponseEntity<String> {
         if (user.id == id) {
             return ResponseEntity.badRequest().body("You can't delete yourself")
