@@ -20,4 +20,5 @@ application:
   security:
     jwt:
       secret-key: a89c1f6f36f57fda65f1155a296c1a068b3d70903bfbbe87a324556436403a91
-      expiration: 86400000 # a day
+      access-lifetime: 1800000 # 30 minutes
+      refresh-lifetime: 2592000000 # a month

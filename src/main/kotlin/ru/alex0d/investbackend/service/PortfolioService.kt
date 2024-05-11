@@ -52,7 +52,7 @@ class PortfolioService(
         val totalValue = stockDtos.sumOf { it.totalValue }.setScale(2, RoundingMode.HALF_UP)
         val totalProfit = stockDtos.sumOf { it.profit }.setScale(2, RoundingMode.HALF_UP)
         val totalProfitPercent =
-            (if (totalValue != BigDecimal(0)) totalProfit / totalValue * BigDecimal(100) else BigDecimal(0))
+            (if (totalValue.compareTo(BigDecimal.ZERO) != 0) totalProfit / totalValue * BigDecimal(100) else BigDecimal.ZERO)
                 .setScale(2, RoundingMode.HALF_UP)
 
         return PortfolioInfoDto(
