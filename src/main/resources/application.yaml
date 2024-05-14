@@ -13,6 +13,12 @@ spring:
         format_sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  ai:
+    openai:
+      api-key: ${OPENAI_KEY}
+      chat:
+        options:
+          model: gpt-3.5-turbo
 
 application:
   tinkoff:
